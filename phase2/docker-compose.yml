@@ -1,0 +1,9 @@
+services:
+  promocatch:
+    build: .
+    container_name: promocatch-app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data/promocatch.db:/app/data/promocatch.db
+    restart: unless-stopped
