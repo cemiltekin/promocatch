@@ -1,17 +1,29 @@
-﻿# PromoCatch
+# PromoCatch
 
-Software Architecture Project organized by phase.
+PromoCatch is a Software Architecture course project delivered in two phases.
 
-## Structure
+## Repository Guide
 
-- `phase1/`: Phase 1 SAD and initial implementation package.
-- `phase2/`: Phase 2 extended SAD, full implementation, screenshots, and presentation.
+- `phase1/`: Phase 1 submission with SAD V1 and the initial implementation.
+- `phase2/`: Final Phase 2 submission with SAD V2, full implementation, screenshots, and presentation files.
 
-## Phase 2 Local Run
+## Recommended Folder for Evaluation
 
-```bash
-cd phase2
-python -m uvicorn main:app --reload
+If you want to review the final version of the project, use:
+
+```text
+phase2/
 ```
 
-Open `http://127.0.0.1:8000` or the configured local port.
+## Quick Start
+
+Open the README inside the phase you want to run:
+
+- `phase1/README.md`
+- `phase2/README.md`
+
+For the complete version of the project, see:
+
+```text
+phase2/README.md
+```

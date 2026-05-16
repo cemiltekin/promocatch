@@ -1,96 +1,95 @@
-# PromoCatch - Campaign and Deal Tracking System (Phase 2)
+# PromoCatch - Phase 2
 
-PromoCatch is a Software Architecture Project implemented as a **Layered REST API**. In Phase 2, the system supports full campaign management: listing, searching, filtering, creating, updating, and deleting campaigns through a complete web interface.
+PromoCatch is a campaign and deal tracking system built as a layered REST API.  
+Phase 2 is the final version of the project and includes the complete web interface, backend API, SAD documents, screenshots, and presentation files.
+
+## What This Phase Includes
+
+- Full frontend for listing, searching, filtering, creating, updating, and deleting campaigns
+- Full backend implementation with FastAPI
+- SQLite persistence
+- SAD Phase 1 and SAD Phase 2 documents
+- Local presentation and screenshots
+- Docker deployment files
 
 ## Architecture
 
-The project follows a strict layered architecture:
+The project follows a layered architecture:
 
-- **Presentation Layer**: `static/index.html`
-- **Control Layer**: `main.py`, `routers.py`
-- **Domain Layer**: `schemas.py`, `services.py`
-- **Resource Layer**: `database.py`, `models.py`, `repository.py`
+- Presentation Layer: `static/index.html`
+- Control Layer: `main.py`, `routers.py`
+- Domain Layer: `schemas.py`, `services.py`
+- Resource Layer: `database.py`, `models.py`, `repository.py`
 
 ## Technology Stack
 
 - Python
 - FastAPI
-- SQLite
 - SQLAlchemy
+- SQLite
 - HTML, CSS, Bootstrap
 - Vanilla JavaScript
 
-## Prerequisites
+## Quick Start for Windows
 
-Install Python 3.11 or newer.
+This is the easiest way to run the project on Windows.
 
-You can check your Python version with:
+1. Open the `phase2` folder.
+2. Double-click `run_local.bat`.
+3. Wait until the terminal says that Uvicorn is running.
+4. Open:
 
-```bash
-python --version
+```text
+http://127.0.0.1:8010
 ```
 
-On some systems, the command may be:
+Notes:
+
+- Keep the terminal window open while using the project.
+- On the first run, the script may create `.venv` and install dependencies automatically.
+- Python 3.11+ must be installed on the machine.
+
+## Manual Run
+
+If you prefer to run it from a terminal:
 
 ```bash
-python3 --version
-```
-
-## Installation
-
-Open a terminal in the project folder and install the dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-If your system uses `python3`, use:
-
-```bash
-python3 -m pip install -r requirements.txt
-```
-
-## Running the Application (Local)
-
-Start the FastAPI server with:
-
-```bash
+cd phase2
 python -m uvicorn main:app --reload
 ```
 
-Alternative command:
+If your system uses `python3`:
 
 ```bash
+cd phase2
 python3 -m uvicorn main:app --reload
 ```
 
 ## Access URLs
 
-Frontend UI:
+If started with `run_local.bat`:
 
-```text
-http://127.0.0.1:8000
-```
+- Frontend UI: `http://127.0.0.1:8010`
+- Swagger Docs: `http://127.0.0.1:8010/docs`
 
-Swagger API Documentation:
+If started manually with `uvicorn` default settings:
 
-```text
-http://127.0.0.1:8000/docs
-```
+- Frontend UI: `http://127.0.0.1:8000`
+- Swagger Docs: `http://127.0.0.1:8000/docs`
 
 ## API Endpoints
 
-- `GET /campaigns`: Lists campaigns (supports `q`, `platform`, `min_discount`, `max_discount` query params).
-- `GET /campaigns/{campaign_id}`: Returns campaign detail.
-- `POST /campaigns`: Adds a new campaign.
-- `PUT /campaigns/{campaign_id}`: Updates an existing campaign.
-- `DELETE /campaigns/{campaign_id}`: Deletes a campaign.
-- `GET /health`: Health check endpoint for deployment validation.
+- `GET /campaigns`
+- `GET /campaigns/{campaign_id}`
+- `POST /campaigns`
+- `PUT /campaigns/{campaign_id}`
+- `DELETE /campaigns/{campaign_id}`
+- `GET /health`
 
 ## Project Structure
 
 ```text
-Phase2_SAD_Code_CemilTekin_KaanKesen_OmerTaricandir/
+phase2/
   main.py
   routers.py
   services.py
@@ -103,11 +102,11 @@ Phase2_SAD_Code_CemilTekin_KaanKesen_OmerTaricandir/
   static/
     index.html
   docs/
-    PromoCatch_Project_Explanation_Presentation.pptx
     SAD_Phase1.md
     SAD_Phase1.pdf
     SAD_Phase2.md
     SAD_Phase2.pdf
+    PromoCatch_Project_Explanation_Presentation.pptx
     screenshots/
   scripts/
     build_sad_phase2_pdf.py
@@ -115,12 +114,13 @@ Phase2_SAD_Code_CemilTekin_KaanKesen_OmerTaricandir/
   Dockerfile
   docker-compose.yml
   requirements.txt
+  run_local.bat
   README.md
 ```
 
-## Running with Docker
+## Docker Run
 
-Build and run with Docker Compose:
+You can also run the project with Docker:
 
 ```bash
 docker compose up --build
@@ -132,14 +132,11 @@ Then open:
 http://127.0.0.1:8000
 ```
 
-## Phase 2 Scope
+## Submission Scope
 
-This submission includes:
+This phase contains:
 
-- Software Architecture Document V1 and V2 using 4+1 views.
-- English project explanation presentation with local application screenshots.
-- Complete frontend implementation for campaign management.
-- Complete backend implementation using FastAPI (CRUD + filters).
-- SQLite database persistence.
-- Docker-based deployment configuration (`Dockerfile`, `docker-compose.yml`).
-- Layered architecture separation across presentation, control, domain, and resource layers.
+- SAD V1 and SAD V2 based on the 4+1 model
+- Full implementation of the selected system
+- Local presentation files
+- Deployment-ready project files

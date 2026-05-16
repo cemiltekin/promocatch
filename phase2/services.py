@@ -7,6 +7,46 @@ import repository
 import schemas
 
 
+ENGLISH_SAMPLE_CAMPAIGNS = [
+    schemas.CampaignCreate(
+        title="Spring Fashion Sale",
+        platform="StyleHub",
+        description="Get an extra discount at checkout on selected fashion brands.",
+        discount_rate=20,
+    ),
+    schemas.CampaignCreate(
+        title="Grocery Cashback Weekend",
+        platform="Bonus Plus",
+        description="Earn bonus points on grocery purchases at partner markets this weekend.",
+        discount_rate=15,
+    ),
+    schemas.CampaignCreate(
+        title="Coffee Club Weekday Offer",
+        platform="Coffee Club",
+        description="Enjoy a weekday discount on your second drink at selected coffee chains.",
+        discount_rate=30,
+    ),
+]
+
+LEGACY_CAMPAIGN_FIXES = {
+    "Giyimde Bahar Firsati": ENGLISH_SAMPLE_CAMPAIGNS[0],
+    "Market Alisverisine Bonus": ENGLISH_SAMPLE_CAMPAIGNS[1],
+    "Kahve Zincirlerinde Firsat": ENGLISH_SAMPLE_CAMPAIGNS[2],
+    "FENERBAHÃE ÃRÃNLERÄ° BEDAVA": schemas.CampaignCreate(
+        title="Official Merchandise Giveaway",
+        platform="Fan Store",
+        description="Selected fan merchandise is available at no cost for a limited-time promotion.",
+        discount_rate=100,
+    ),
+    "FENERBAHÇE ÜRÜNLERİ BEDAVA": schemas.CampaignCreate(
+        title="Official Merchandise Giveaway",
+        platform="Fan Store",
+        description="Selected fan merchandise is available at no cost for a limited-time promotion.",
+        discount_rate=100,
+    ),
+}
+
+
 def list_campaigns(
     db: Session,
     q: Optional[str] = None,
@@ -76,30 +116,23 @@ def delete_campaign(db: Session, campaign_id: int) -> bool:
 
 
 def seed_initial_campaigns(db: Session) -> None:
-    """Populate the database with sample data for Phase 1 demos."""
-    if repository.count_campaigns(db) > 0:
-        return
+    """Ensure demo data exists and uses the current English sample content."""
+    if repository.count_campaigns(db) == 0:
+        for campaign in ENGLISH_SAMPLE_CAMPAIGNS:
+            repository.create_campaign(db, campaign)
 
-    sample_campaigns = [
-        schemas.CampaignCreate(
-            title="Giyimde Bahar Firsati",
-            platform="Zubizu",
-            description="Secili moda markalarinda sepette ekstra indirim kampanyasi.",
-            discount_rate=20,
-        ),
-        schemas.CampaignCreate(
-            title="Market Alisverisine Bonus",
-            platform="Bonus Flash",
-            description="Anlasmali marketlerde yapilan harcamalara bonus puan kazanimi.",
-            discount_rate=15,
-        ),
-        schemas.CampaignCreate(
-            title="Kahve Zincirlerinde Firsat",
-            platform="Zubizu",
-            description="Hafta ici kahve alisverislerinde ikinci urune ozel indirim.",
-            discount_rate=30,
-        ),
-    ]
+    repair_legacy_campaigns(db)
 
-    for campaign in sample_campaigns:
-        repository.create_campaign(db, campaign)
+
+def repair_legacy_campaigns(db: Session) -> None:
+    """Replace legacy or mojibake demo records with the current English samples."""
+    for campaign in repository.get_all_campaigns(db):
+        replacement = LEGACY_CAMPAIGN_FIXES.get(campaign.title)
+        if not replacement:
+            continue
+
+        repository.update_campaign(
+            db,
+            campaign,
+            schemas.CampaignUpdate(**replacement.model_dump()),
+        )

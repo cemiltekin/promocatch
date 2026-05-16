@@ -1,22 +1,31 @@
-# PromoCatch - Campaign and Deal Tracking System (Phase 1)
+# PromoCatch - Phase 1
 
-PromoCatch is a Software Architecture Project implemented as a **Layered REST API**. This Phase 1 submission focuses on architecture design and initial implementation: documenting the system with SAD Version 1, providing use case/logical/process views, and delivering working frontend/backend code for the campaign tracking scenario.
+PromoCatch is a campaign and deal tracking system built as a layered REST API.  
+Phase 1 contains the initial implementation and SAD Version 1.
+
+## What This Phase Includes
+
+- System selection and scope definition
+- SAD V1
+- Initial frontend and backend implementation
+- Use case, logical, and process views
+- SQLite-based persistence
 
 ## Architecture
 
-The project follows a strict layered architecture:
+The project follows a layered architecture:
 
-- **Presentation Layer**: `static/index.html`
-- **Control Layer**: `main.py`, `routers.py`
-- **Domain Layer**: `schemas.py`, `services.py`
-- **Resource Layer**: `database.py`, `models.py`, `repository.py`
+- Presentation Layer: `static/index.html`
+- Control Layer: `main.py`, `routers.py`
+- Domain Layer: `schemas.py`, `services.py`
+- Resource Layer: `database.py`, `models.py`, `repository.py`
 
 ## Technology Stack
 
 - Python
 - FastAPI
-- SQLite
 - SQLAlchemy
+- SQLite
 - HTML, CSS, Bootstrap
 - Vanilla JavaScript
 
@@ -24,73 +33,38 @@ The project follows a strict layered architecture:
 
 Install Python 3.11 or newer.
 
-You can check your Python version with:
+## Run Locally
 
 ```bash
-python --version
-```
-
-On some systems, the command may be:
-
-```bash
-python3 --version
-```
-
-## Installation
-
-Open a terminal in the project folder and install the dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-If your system uses `python3`, use:
-
-```bash
-python3 -m pip install -r requirements.txt
-```
-
-## Running the Application (Local)
-
-Start the FastAPI server with:
-
-```bash
+cd phase1
 python -m uvicorn main:app --reload
 ```
 
-Alternative command:
+If your system uses `python3`:
 
 ```bash
+cd phase1
 python3 -m uvicorn main:app --reload
 ```
 
 ## Access URLs
 
-Frontend UI:
-
-```text
-http://127.0.0.1:8000
-```
-
-Swagger API Documentation:
-
-```text
-http://127.0.0.1:8000/docs
-```
+- Frontend UI: `http://127.0.0.1:8000`
+- Swagger Docs: `http://127.0.0.1:8000/docs`
 
 ## API Endpoints
 
-- `GET /campaigns`: Lists campaigns (supports `q`, `platform`, `min_discount`, `max_discount` query params).
-- `GET /campaigns/{campaign_id}`: Returns campaign detail.
-- `POST /campaigns`: Adds a new campaign.
-- `PUT /campaigns/{campaign_id}`: Updates an existing campaign.
-- `DELETE /campaigns/{campaign_id}`: Deletes a campaign.
-- `GET /health`: Health check endpoint for deployment validation.
+- `GET /campaigns`
+- `GET /campaigns/{campaign_id}`
+- `POST /campaigns`
+- `PUT /campaigns/{campaign_id}`
+- `DELETE /campaigns/{campaign_id}`
+- `GET /health`
 
 ## Project Structure
 
 ```text
-Phase1_SAD_Code_CemilTekin_KaanKesen_OmerTaricandir/
+phase1/
   main.py
   routers.py
   services.py
@@ -111,9 +85,7 @@ Phase1_SAD_Code_CemilTekin_KaanKesen_OmerTaricandir/
   README.md
 ```
 
-## Running with Docker
-
-Build and run with Docker Compose:
+## Docker Run
 
 ```bash
 docker compose up --build
@@ -124,16 +96,3 @@ Then open:
 ```text
 http://127.0.0.1:8000
 ```
-
-## Phase 1 Scope
-
-This submission includes:
-
-- Software Architecture Document V1 using 4+1 architectural views.
-- System selection, purpose, users, and main functionalities.
-- Use case view with diagram and related partial UI implementation.
-- Logical view with UML diagrams, component relationships, and related backend code.
-- Process view with workflows, sequence diagram, and related code snippets.
-- Frontend and backend implementation using a layered REST API structure.
-- SQLite database persistence.
-- Layered architecture separation across presentation, control, domain, and resource layers.

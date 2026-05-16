@@ -138,7 +138,7 @@ def add_cover(prs: Presentation) -> None:
     lines = [
         "Campaign and Deal Tracking System",
         "Project Explanation and Phase 2 Demo",
-        "Team: Cemil Tekin, Kaan Kesen, Omer Tarik Candir",
+        "Team: Cemil Tekin, Serdar Kaan Kesen, Ömer Tarık Çandır",
         "Local URL used for screenshots: http://127.0.0.1:8010",
     ]
     for idx, line in enumerate(lines):
@@ -390,7 +390,7 @@ def add_submission_checklist(prs: Presentation) -> None:
     add_bullets(
         slide,
         [
-            "1. Phase2_SAD_Code_CemilTekin_KaanKesen_OmerTaricandir.zip",
+            "1. Phase2_SAD_Code_CemilTekin_SerdarKaanKesen_OmerTarikCandir.zip",
             "2. docs/SAD_Phase2.pdf",
             "3. docs/SAD_Phase2.md",
             "4. docs/PromoCatch_Project_Explanation_Presentation.pptx",

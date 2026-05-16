@@ -101,7 +101,7 @@
             <span class="hero-badge mb-4">Layered Architecture Phase 2</span>
             <h1 class="display-4 fw-bold mb-3">PromoCatch</h1>
             <p class="lead mb-0">
-              Track retail and financial campaigns from platforms like Zubizu and Bonus Flash,
+              Track retail and finance promotions from your favorite platforms,
               then add newly discovered deals to the system.
             </p>
           </div>
@@ -155,11 +155,11 @@
             <form id="campaignForm" class="row g-3" autocomplete="off">
               <div class="col-md-6">
                 <label for="title" class="form-label fw-semibold">Title</label>
-                <input class="form-control form-control-lg" id="title" name="title" type="text" minlength="3" required placeholder="Giyimde %20 Indirim">
+                <input class="form-control form-control-lg" id="title" name="title" type="text" minlength="3" required placeholder="Spring Fashion Sale">
               </div>
               <div class="col-md-6">
                 <label for="platform" class="form-label fw-semibold">Platform</label>
-                <input class="form-control form-control-lg" id="platform" name="platform" type="text" minlength="2" required placeholder="Zubizu">
+                <input class="form-control form-control-lg" id="platform" name="platform" type="text" minlength="2" required placeholder="StyleHub">
               </div>
               <div class="col-12">
                 <label for="description" class="form-label fw-semibold">Description</label>
@@ -227,16 +227,28 @@
         formMessage.className = `ms-3 fw-semibold text-${level}`;
       }
 
-      function normalizeDiscount(value, fallback = 20) {
+      function parseDiscountValue(value) {
         const parsedValue = Number.parseInt(String(value), 10);
         if (Number.isNaN(parsedValue)) {
-          return fallback;
+          return null;
+        }
+        return parsedValue;
+      }
+
+      function normalizeDiscount(value) {
+        const parsedValue = parseDiscountValue(value);
+        if (parsedValue === null) {
+          return null;
         }
         return Math.min(100, Math.max(1, parsedValue));
       }
 
       function setDiscountValue(value) {
         const normalized = normalizeDiscount(value);
+        if (normalized === null) {
+          clearDiscountValue();
+          return;
+        }
         discountRateInput.value = String(normalized);
         discountRateSlider.value = String(normalized);
         discountPreview.textContent = `%${normalized}`;
@@ -387,13 +399,24 @@
 
       campaignForm.addEventListener("submit", async (event) => {
         event.preventDefault();
+        if (!campaignForm.reportValidity()) {
+          return;
+        }
+
+        const discountRate = normalizeDiscount(discountRateInput.value);
+        if (discountRate === null) {
+          setFormMessage("Discount rate is required.", "danger");
+          discountRateInput.focus();
+          return;
+        }
+
         setFormMessage("Saving...", "secondary");
 
         const payload = {
           title: titleInput.value,
           platform: platformInput.value,
           description: descriptionInput.value,
-          discount_rate: normalizeDiscount(discountRateInput.value),
+          discount_rate: discountRate,
         };
 
         try {

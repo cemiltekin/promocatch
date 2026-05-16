@@ -1,4 +1,4 @@
-# Software Architecture Document V1
+﻿# Software Architecture Document V1
 
 ## Project Information
 
@@ -178,14 +178,14 @@ class Campaign {
   +string title
   +string platform
   +string description
-  +float discount_rate
+  +int discount_rate
 }
 
 class CampaignCreate {
   +string title
   +string platform
   +string description
-  +float discount_rate
+  +int discount_rate
 }
 
 class CampaignRead {
@@ -193,7 +193,7 @@ class CampaignRead {
   +string title
   +string platform
   +string description
-  +float discount_rate
+  +int discount_rate
 }
 
 CampaignCreate <|-- CampaignRead
@@ -357,5 +357,6 @@ Planned for later phases:
 | Team Member | Contribution |
 | --- | --- |
 | Cemil Tekin | System selection, layered backend architecture, FastAPI REST API development, SQLite database integration, frontend UI integration |
-| Kaan Kesen   | SAD Phase 1 documentation, and final submission packaging|
+| Serdar Kaan Kesen | SAD Phase 1 documentation, and final submission packaging|
 | Ömer Tarık Çandır | SQLite database integration, frontend UI integration|
+

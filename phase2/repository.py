@@ -23,7 +23,8 @@ def get_all_campaigns(
         )
 
     if platform:
-        query = query.filter(models.Campaign.platform.ilike(platform))
+        platform_search = f"%{platform}%"
+        query = query.filter(models.Campaign.platform.ilike(platform_search))
 
     if min_discount is not None:
         query = query.filter(models.Campaign.discount_rate >= min_discount)

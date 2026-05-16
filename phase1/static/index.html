@@ -101,7 +101,7 @@
             <span class="hero-badge mb-4">Layered Architecture Phase 1</span>
             <h1 class="display-4 fw-bold mb-3">PromoCatch</h1>
             <p class="lead mb-0">
-              Track retail and financial campaigns from platforms like Zubizu and Bonus Flash,
+              Track retail and finance promotions from your favorite platforms,
               then add newly discovered deals to the system.
             </p>
           </div>
@@ -155,11 +155,11 @@
             <form id="campaignForm" class="row g-3">
               <div class="col-md-6">
                 <label for="title" class="form-label fw-semibold">Title</label>
-                <input class="form-control form-control-lg" id="title" name="title" type="text" minlength="3" required placeholder="Giyimde %20 Indirim">
+                <input class="form-control form-control-lg" id="title" name="title" type="text" minlength="3" required placeholder="Spring Fashion Sale">
               </div>
               <div class="col-md-6">
                 <label for="platform" class="form-label fw-semibold">Platform</label>
-                <input class="form-control form-control-lg" id="platform" name="platform" type="text" minlength="2" required placeholder="Zubizu">
+                <input class="form-control form-control-lg" id="platform" name="platform" type="text" minlength="2" required placeholder="StyleHub">
               </div>
               <div class="col-12">
                 <label for="description" class="form-label fw-semibold">Description</label>
@@ -167,10 +167,10 @@
               </div>
               <div class="col-md-6">
                 <label for="discount_rate" class="form-label fw-semibold">Discount Rate (%)</label>
-                <input class="form-control form-control-lg" id="discount_rate" name="discount_rate" type="number" min="1" max="100" step="1" required placeholder="20">
+                <input class="form-control form-control-lg" id="discount_rate" name="discount_rate" type="number" min="1" max="100" step="1" required autocomplete="off">
                 <div class="d-flex justify-content-between mt-2">
                   <small class="text-secondary">Fast selection</small>
-                  <small class="text-secondary" id="discountPreview">%20</small>
+                  <small class="text-secondary" id="discountPreview"></small>
                 </div>
                 <input class="form-range mt-1" id="discountRateSlider" type="range" min="1" max="100" step="1" value="20">
                 <div class="d-flex gap-2 flex-wrap mt-2">
@@ -226,19 +226,58 @@
         formMessage.className = `ms-3 fw-semibold text-${level}`;
       }
 
-      function normalizeDiscount(value, fallback = 20) {
+      function parseDiscountValue(value) {
         const parsedValue = Number.parseInt(String(value), 10);
         if (Number.isNaN(parsedValue)) {
-          return fallback;
+          return null;
+        }
+        return parsedValue;
+      }
+
+      function normalizeDiscount(value) {
+        const parsedValue = parseDiscountValue(value);
+        if (parsedValue === null) {
+          return null;
         }
         return Math.min(100, Math.max(1, parsedValue));
       }
 
       function setDiscountValue(value) {
         const normalized = normalizeDiscount(value);
+        if (normalized === null) {
+          clearDiscountValue();
+          return;
+        }
         discountRateInput.value = String(normalized);
         discountRateSlider.value = String(normalized);
         discountPreview.textContent = `%${normalized}`;
+      }
+
+      function clearDiscountValue() {
+        discountRateInput.defaultValue = "";
+        discountRateInput.value = "";
+        discountRateSlider.value = "20";
+        discountPreview.textContent = "";
+      }
+
+      function syncManualDiscountPreview() {
+        const rawValue = discountRateInput.value.trim();
+        if (!rawValue) {
+          discountPreview.textContent = "";
+          return;
+        }
+
+        const parsedValue = Number.parseInt(rawValue, 10);
+        if (Number.isNaN(parsedValue)) {
+          discountPreview.textContent = "";
+          return;
+        }
+
+        const normalized = normalizeDiscount(parsedValue);
+        discountPreview.textContent = `%${normalized}`;
+        if (parsedValue >= 1 && parsedValue <= 100) {
+          discountRateSlider.value = String(parsedValue);
+        }
       }
 
       function setEditMode(campaign = null) {
@@ -248,7 +287,7 @@
           submitButton.textContent = "Add Campaign";
           cancelEditButton.classList.add("d-none");
           campaignForm.reset();
-          setDiscountValue(20);
+          clearDiscountValue();
           return;
         }
 
@@ -359,13 +398,24 @@
 
       campaignForm.addEventListener("submit", async (event) => {
         event.preventDefault();
+        if (!campaignForm.reportValidity()) {
+          return;
+        }
+
+        const discountRate = normalizeDiscount(discountRateInput.value);
+        if (discountRate === null) {
+          setFormMessage("Discount rate is required.", "danger");
+          discountRateInput.focus();
+          return;
+        }
+
         setFormMessage("Saving...", "secondary");
 
         const payload = {
           title: titleInput.value,
           platform: platformInput.value,
           description: descriptionInput.value,
-          discount_rate: normalizeDiscount(discountRateInput.value),
+          discount_rate: discountRate,
         };
 
         try {
@@ -439,7 +489,12 @@
         maxDiscountFilter.value = "";
         await loadCampaigns();
       });
-      discountRateInput.addEventListener("input", () => {
+      discountRateInput.addEventListener("input", syncManualDiscountPreview);
+      discountRateInput.addEventListener("blur", () => {
+        if (!discountRateInput.value.trim()) {
+          clearDiscountValue();
+          return;
+        }
         setDiscountValue(discountRateInput.value);
       });
       discountRateSlider.addEventListener("input", () => {
@@ -455,7 +510,8 @@
         setFormMessage("Edit mode cancelled.", "secondary");
       });
 
-      setDiscountValue(20);
+      clearDiscountValue();
+      window.addEventListener("pageshow", clearDiscountValue);
       loadCampaigns();
     </script>
   </body>

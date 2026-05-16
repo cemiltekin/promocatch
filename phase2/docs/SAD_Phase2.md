@@ -1,4 +1,4 @@
-# Software Architecture Document V2
+﻿# Software Architecture Document V2
 
 ## Project Information
 
@@ -359,5 +359,6 @@ Completed implementation in this version:
 | Team Member | Contribution |
 | --- | --- |
 | Cemil Tekin | Extended SAD V2 architecture and implementation alignment, backend/full-stack integration |
-| Kaan Kesen | SAD structure review, diagrams and documentation organization |
+| Serdar Kaan Kesen | SAD structure review, diagrams and documentation organization |
 | Ömer Tarık Çandır | Frontend implementation completion and API integration testing |
+
