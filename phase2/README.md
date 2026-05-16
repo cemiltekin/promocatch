@@ -32,12 +32,28 @@ The project follows a layered architecture:
 
 ## Quick Start for Windows
 
-This is the easiest way to run the project on Windows.
+You can start the project on Windows in two simple ways.
+
+### Option 1: Batch file
 
 1. Open the `phase2` folder.
 2. Double-click `run_local.bat`.
 3. Wait until the terminal says that Uvicorn is running.
 4. Open:
+
+```text
+http://127.0.0.1:8010
+```
+
+### Option 2: PowerShell script
+
+Run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\run_local.ps1
+```
+
+Then open:
 
 ```text
 http://127.0.0.1:8010
@@ -115,6 +131,7 @@ phase2/
   docker-compose.yml
   requirements.txt
   run_local.bat
+  run_local.ps1
   README.md
 ```
 
