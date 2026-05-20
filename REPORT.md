@@ -94,11 +94,17 @@ User Interface → FastAPI Router → Service Layer → Repository Layer → SQL
 | Method | Endpoint | Phase 1 | Phase 2 | Description |
 |--------|----------|---------|---------|-------------|
 | GET | `/campaigns` | ✓ | ✓ | List campaigns with optional filters |
+| GET | `/campaigns/platforms/list` | ✗ | ✓ | Retrieve unique platform names |
+| GET | `/campaigns/stats/summary` | ✗ | ✓ | Retrieve aggregate campaign statistics |
+| GET | `/campaigns/recent/list` | ✗ | ✓ | Retrieve most recently added campaigns |
+| GET | `/campaigns/discount/highest` | ✗ | ✓ | Retrieve the campaign with the highest discount |
+| POST | `/campaigns/{campaign_id}/click` | ✗ | ✓ | Simulate a user click on a campaign |
+| DELETE | `/campaigns/bulk/clear` | ✗ | ✓ | Utility endpoint to delete all campaigns |
 | GET | `/campaigns/{campaign_id}` | ✓ | ✓ | Retrieve single campaign |
 | POST | `/campaigns` | ✓ | ✓ | Create new campaign |
 | PUT | `/campaigns/{campaign_id}` | ✓ | ✓ | Update existing campaign |
 | DELETE | `/campaigns/{campaign_id}` | ✗ | ✓ | Delete campaign |
-| GET | `/health` | ✓ | ✗ | System health check |
+| GET | `/health` | ✓ | ✓ | System health check |
 
 #### **4.2 Query Parameters**
 
@@ -406,7 +412,7 @@ docker compose up --build
 - Domain Layer: 2 files (schemas.py, services.py)
 - Resource Layer: 3 files (database.py, models.py, repository.py)
 
-**API Endpoints:** 5 total (8 methods across different paths)
+**API Endpoints:** 12 total (8 methods across different paths)
 
 ---
 

@@ -25,3 +25,19 @@ class CampaignRead(CampaignBase):
     id: int
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class CampaignStats(BaseModel):
+    total_campaigns: int
+    average_discount: float
+    max_discount: int
+
+
+class ClickResponse(BaseModel):
+    message: str
+    campaign_id: int
+
+
+class BulkDeleteResponse(BaseModel):
+    deleted_count: int
+    message: str

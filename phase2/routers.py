@@ -49,6 +49,46 @@ def get_campaigns(
     )
 
 
+@router.get("/platforms/list", response_model=list[str])
+def get_platforms_list(db: Session = Depends(get_db)):
+    """Control layer endpoint for retrieving all unique platforms."""
+    return services.get_all_platforms(db)
+
+@router.get("/stats/summary", response_model=schemas.CampaignStats)
+def get_campaign_stats(db: Session = Depends(get_db)):
+    """Control layer endpoint for retrieving aggregate statistics."""
+    return services.get_campaign_stats(db)
+
+@router.get("/recent/list", response_model=list[schemas.CampaignRead])
+def get_recent_campaigns_list(db: Session = Depends(get_db)):
+    """Control layer endpoint for retrieving the most recently added campaigns."""
+    return services.get_recent_campaigns(db)
+
+@router.get("/discount/highest", response_model=schemas.CampaignRead)
+def get_highest_discount(db: Session = Depends(get_db)):
+    """Control layer endpoint for retrieving the campaign with the highest discount."""
+    campaign = services.get_highest_discount_campaign(db)
+    if not campaign:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No campaigns available.")
+    return campaign
+
+@router.post("/{campaign_id}/click", response_model=schemas.ClickResponse)
+def simulate_click(
+    campaign_id: int = Path(..., ge=1, description="Campaign identifier (positive integer)."),
+    db: Session = Depends(get_db)
+):
+    """Control layer endpoint to simulate a user click on a campaign."""
+    response = services.simulate_campaign_click(db, campaign_id)
+    if not response:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Campaign not found.")
+    return response
+
+@router.delete("/bulk/clear", response_model=schemas.BulkDeleteResponse)
+def clear_all(db: Session = Depends(get_db)):
+    """Control layer endpoint to delete all campaigns (utility)."""
+    return services.clear_all_campaigns(db)
+
+
 @router.get("/{campaign_id}", response_model=schemas.CampaignRead)
 def get_campaign(
     campaign_id: int = Path(..., ge=1, description="Campaign identifier (positive integer)."),

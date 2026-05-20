@@ -136,3 +136,25 @@ def repair_legacy_campaigns(db: Session) -> None:
             campaign,
             schemas.CampaignUpdate(**replacement.model_dump()),
         )
+
+def get_all_platforms(db: Session) -> list[str]:
+    return repository.get_platforms(db)
+
+def get_campaign_stats(db: Session) -> dict:
+    return repository.get_stats(db)
+
+def get_recent_campaigns(db: Session) -> list[models.Campaign]:
+    return repository.get_recent_campaigns(db)
+
+def get_highest_discount_campaign(db: Session) -> Optional[models.Campaign]:
+    return repository.get_highest_discount(db)
+
+def simulate_campaign_click(db: Session, campaign_id: int) -> dict:
+    campaign = repository.get_campaign_by_id(db, campaign_id)
+    if not campaign:
+        return None
+    return {"message": "Click recorded", "campaign_id": campaign_id}
+
+def clear_all_campaigns(db: Session) -> dict:
+    count = repository.clear_all_campaigns(db)
+    return {"deleted_count": count, "message": f"Deleted {count} campaigns."}

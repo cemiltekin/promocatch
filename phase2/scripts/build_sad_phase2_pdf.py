@@ -34,11 +34,11 @@ FONT_BOLD_ITALIC = "SADSansBoldItalic"
 
 def register_fonts() -> None:
     """Register Unicode-capable fonts for Turkish characters."""
-    base = Path("/System/Library/Fonts/Supplemental")
-    pdfmetrics.registerFont(TTFont(FONT_REGULAR, str(base / "Times New Roman.ttf")))
-    pdfmetrics.registerFont(TTFont(FONT_BOLD, str(base / "Times New Roman Bold.ttf")))
-    pdfmetrics.registerFont(TTFont(FONT_ITALIC, str(base / "Times New Roman Italic.ttf")))
-    pdfmetrics.registerFont(TTFont(FONT_BOLD_ITALIC, str(base / "Times New Roman Bold Italic.ttf")))
+    base = Path("C:/Windows/Fonts")
+    pdfmetrics.registerFont(TTFont(FONT_REGULAR, str(base / "times.ttf")))
+    pdfmetrics.registerFont(TTFont(FONT_BOLD, str(base / "timesbd.ttf")))
+    pdfmetrics.registerFont(TTFont(FONT_ITALIC, str(base / "timesi.ttf")))
+    pdfmetrics.registerFont(TTFont(FONT_BOLD_ITALIC, str(base / "timesbi.ttf")))
 
 
 def inline_md_to_html(text: str) -> str:
