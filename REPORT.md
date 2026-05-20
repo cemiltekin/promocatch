@@ -424,5 +424,3 @@ The project serves as an excellent reference for learning software architecture 
 
 ---
 
-**Report Generated:** May 20, 2026  
-**Project Repository:** `/Users/omertarikcandir/Desktop/promocatch-main`
